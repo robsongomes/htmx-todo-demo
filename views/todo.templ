@@ -1,6 +1,7 @@
 package views
 
 import "github.com/robsongomes/htmx-starter/types"
+import "fmt"
 
 templ TodoPage(todos []types.Todo) {
 	@page() {
@@ -14,10 +15,7 @@ templ TodoPage(todos []types.Todo) {
 			</div>
 			<div id="todos">
 				for _, t := range todos {
-					<label class="panel-block">
-						<span class="mr-auto">{ t.Description }</span>
-						<span>X</span>
-					</label>
+					@Todo(t)
 				}
 			</div>
 		</div>
@@ -34,6 +32,26 @@ templ TodoForm() {
 			autocomplete="off"
 			class="input is-success is-medium"
 		/>
-		<button hx-post="/todos" hx-target="body" class="button ml-2 is-success is-medium">Add</button>
+		<button hx-post="/todos" hx-target="#todos" hx-swap="afterbegin" class="button ml-2 is-success is-medium">Add</button>
 	</form>
+}
+
+css doneTodo() {
+	text-decoration: line-through;
+}
+
+templ Todo(t types.Todo) {
+	<label
+		hx-put={ string(templ.URL(fmt.Sprintf("/todos/%d", t.Id))) }
+		hx-target="this"
+		hx-swap="outerHTML"
+		class="panel-block"
+	>
+		<span
+			class={ "mr-auto", templ.KV(doneTodo(), t.Done) }
+		>
+			{ t.Description }
+		</span>
+		<span>X</span>
+	</label>
 }

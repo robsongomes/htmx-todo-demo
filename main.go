@@ -18,6 +18,7 @@ func main() {
 
 	http.Handle("GET /todos", handlers.HTTPHandler(todoHandler.Home))
 	http.Handle("POST /todos", handlers.HTTPHandler(todoHandler.CreateTodo))
+	http.Handle("PUT /todos/{id}", handlers.HTTPHandler(todoHandler.ToggleTodo))
 
 	http.ListenAndServe(":3000", nil)
 }
