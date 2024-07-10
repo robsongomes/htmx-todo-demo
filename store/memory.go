@@ -42,3 +42,8 @@ func (ms *InMemoryStore) ToggleTodo(id int) types.Todo {
 	ms.todos[idx].Done = !ms.todos[idx].Done
 	return ms.todos[idx]
 }
+
+func (ms *InMemoryStore) DeleteTodo(id int) {
+	idx := ms.indexOf(id)
+	ms.todos = append(ms.todos[:idx], ms.todos[idx+1:]...)
+}

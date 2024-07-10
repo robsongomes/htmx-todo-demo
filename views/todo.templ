@@ -52,6 +52,14 @@ templ Todo(t types.Todo) {
 		>
 			{ t.Description }
 		</span>
-		<span>X</span>
+		<span
+			title="Remove"
+			class="has-text-danger"
+			hx-delete={ string(templ.URL(fmt.Sprintf("/todos/%d", t.Id))) }
+			hx-target="closest label"
+			hx-swap="outerHTML"
+			hx-confirm="Tem certeza que deseja excluir o todo?"
+			hx-on:click="event.stopPropagation()"
+		>X</span>
 	</label>
 }

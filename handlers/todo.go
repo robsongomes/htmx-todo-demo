@@ -13,6 +13,7 @@ type TodoStore interface {
 	AllTodos() []types.Todo
 	CreateTodo(desc string) types.Todo
 	ToggleTodo(id int) types.Todo
+	DeleteTodo(id int)
 }
 
 type TodoHandler struct {
@@ -38,4 +39,11 @@ func (th *TodoHandler) ToggleTodo(w http.ResponseWriter, r *http.Request) error 
 	id, _ := strconv.Atoi(r.PathValue("id"))
 	todo := th.store.ToggleTodo(id)
 	return render(w, r, views.Todo(todo))
+}
+
+func (th *TodoHandler) DeleteTodo(w http.ResponseWriter, r *http.Request) error {
+	id, _ := strconv.Atoi(r.PathValue("id"))
+	th.store.DeleteTodo(id)
+	w.Write([]byte(""))
+	return nil
 }
