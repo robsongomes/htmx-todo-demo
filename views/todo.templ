@@ -1,0 +1,39 @@
+package views
+
+import "github.com/robsongomes/htmx-starter/types"
+
+templ TodoPage(todos []types.Todo) {
+	@page() {
+		<div class="panel is-primary is-light">
+			<p class="panel-heading">TODO List</p>
+			<div class="panel-block">
+				@TodoForm()
+			</div>
+			<div class="panel-block">
+				<h1>Filter</h1>
+			</div>
+			<div id="todos">
+				for _, t := range todos {
+					<label class="panel-block">
+						<span class="mr-auto">{ t.Description }</span>
+						<span>X</span>
+					</label>
+				}
+			</div>
+		</div>
+	}
+}
+
+templ TodoForm() {
+	<form class="container is-flex">
+		<input
+			id="description"
+			type="text"
+			name="description"
+			placeholder="todo description"
+			autocomplete="off"
+			class="input is-success is-medium"
+		/>
+		<button hx-post="/todos" hx-target="body" class="button ml-2 is-success is-medium">Add</button>
+	</form>
+}
