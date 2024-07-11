@@ -14,6 +14,7 @@ type TodoStore interface {
 	CreateTodo(desc string) types.Todo
 	ToggleTodo(id int) types.Todo
 	DeleteTodo(id int)
+	Filter(expr string) []types.Todo
 }
 
 type TodoHandler struct {
@@ -46,4 +47,9 @@ func (th *TodoHandler) DeleteTodo(w http.ResponseWriter, r *http.Request) error 
 	th.store.DeleteTodo(id)
 	w.Write([]byte(""))
 	return nil
+}
+
+func (th *TodoHandler) FilterTodos(w http.ResponseWriter, r *http.Request) error {
+	filter := r.URL.Query().Get("filter")
+	return render(w, r, views.TodoList(th.store.Filter(filter)))
 }

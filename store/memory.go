@@ -1,6 +1,11 @@
 package store
 
-import "github.com/robsongomes/htmx-starter/types"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/robsongomes/htmx-starter/types"
+)
 
 type InMemoryStore struct {
 	lastId int
@@ -8,12 +13,16 @@ type InMemoryStore struct {
 }
 
 func NewInMemoryStore() *InMemoryStore {
+	todos := []types.Todo{
+		{Id: 1, Description: "Dar banho no cachorro", Done: false},
+		{Id: 2, Description: "Comprar ração", Done: true},
+	}
+	for i := range 50 {
+		todos = append(todos, types.Todo{Description: fmt.Sprintf("Todo #%d", i)})
+	}
 	return &InMemoryStore{
-		lastId: 2,
-		todos: []types.Todo{
-			{Id: 1, Description: "Dar banho no cachorro", Done: false},
-			{Id: 2, Description: "Comprar ração", Done: true},
-		},
+		lastId: 52,
+		todos:  todos,
 	}
 }
 
@@ -46,4 +55,13 @@ func (ms *InMemoryStore) ToggleTodo(id int) types.Todo {
 func (ms *InMemoryStore) DeleteTodo(id int) {
 	idx := ms.indexOf(id)
 	ms.todos = append(ms.todos[:idx], ms.todos[idx+1:]...)
+}
+
+func (ms *InMemoryStore) Filter(expr string) (res []types.Todo) {
+	for _, t := range ms.todos {
+		if strings.Contains(strings.ToLower(t.Description), strings.ToLower(expr)) {
+			res = append(res, t)
+		}
+	}
+	return
 }

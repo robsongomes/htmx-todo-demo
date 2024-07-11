@@ -11,15 +11,32 @@ templ TodoPage(todos []types.Todo) {
 				@TodoForm()
 			</div>
 			<div class="panel-block">
-				<h1>Filter</h1>
+				@TodoFilter()
 			</div>
 			<div id="todos">
-				for _, t := range todos {
-					@Todo(t)
-				}
+				@TodoList(todos)
 			</div>
 		</div>
 	}
+}
+
+templ TodoList(todos []types.Todo) {
+	for _, t := range todos {
+		@Todo(t)
+	}
+}
+
+templ TodoFilter() {
+	<input
+		class="input is-info"
+		type="text"
+		name="filter"
+		placeholder="filter"
+		autocomplete="off"
+		hx-get="/todos/filter"
+		hx-target="#todos"
+		hx-trigger="keyup changed delay:500ms"
+	/>
 }
 
 templ TodoForm() {

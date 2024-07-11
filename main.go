@@ -17,6 +17,7 @@ func main() {
 	http.Handle("GET /", handlers.HTTPHandler(handlers.HomeHandler))
 
 	http.Handle("GET /todos", handlers.HTTPHandler(todoHandler.Home))
+	http.Handle("GET /todos/filter", handlers.HTTPHandler(todoHandler.FilterTodos))
 	http.Handle("POST /todos", handlers.HTTPHandler(todoHandler.CreateTodo))
 	http.Handle("PUT /todos/{id}", handlers.HTTPHandler(todoHandler.ToggleTodo))
 	http.Handle("DELETE /todos/{id}", handlers.HTTPHandler(todoHandler.DeleteTodo))
