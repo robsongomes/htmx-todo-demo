@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/robsongomes/htmx-starter/services"
 	"github.com/robsongomes/htmx-starter/types"
 	"github.com/robsongomes/htmx-starter/views"
 )
@@ -52,4 +53,18 @@ func (th *TodoHandler) DeleteTodo(w http.ResponseWriter, r *http.Request) error 
 func (th *TodoHandler) FilterTodos(w http.ResponseWriter, r *http.Request) error {
 	filter := r.URL.Query().Get("filter")
 	return render(w, r, views.TodoList(th.store.Filter(filter)))
+}
+
+func (th *TodoHandler) ValidateTodoDescription(w http.ResponseWriter, r *http.Request) error {
+	description := r.FormValue("description")
+	res, err := services.Validate(description)
+	if err != nil {
+		return err
+	}
+	if res.BadWordsTotal > 0 {
+		msg := "Palavras impróprias: "
+		msg += res.BadWords()
+		return render(w, r, views.TodoValidationMessage(msg))
+	}
+	return render(w, r, views.TodoValidationMessage(""))
 }

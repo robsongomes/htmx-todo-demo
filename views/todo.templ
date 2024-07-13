@@ -40,17 +40,35 @@ templ TodoFilter() {
 }
 
 templ TodoForm() {
-	<form class="container is-flex">
-		<input
-			id="description"
-			type="text"
-			name="description"
-			placeholder="todo description"
-			autocomplete="off"
-			class="input is-success is-medium"
-		/>
-		<button hx-post="/todos" hx-target="#todos" hx-swap="afterbegin" class="button ml-2 is-success is-medium">Add</button>
+	<form hx-post="/todos" hx-target="#todos" hx-swap="afterbegin" class="container is-flex is-align-items-flex-start">
+		<div class="container is-flex is-flex-direction-column">
+			<input
+				id="description"
+				type="text"
+				required
+				name="description"
+				placeholder="todo description"
+				autocomplete="off"
+				class="input is-success is-medium"
+				hx-post="/todos/validate"
+				hx-trigger="keyup changed delay:500ms"
+				hx-target="#errors"
+				hx-swap="outerHTML"
+			/>
+			<p id="errors"></p>
+		</div>
+		<button id="add-btn" disabled class="button ml-2 is-success is-medium">Add</button>
 	</form>
+}
+
+templ TodoValidationMessage(msg string) {
+	<button
+		id="add-btn"
+		hx-swap-oob="true"
+		disabled?={ len(msg) > 0 }
+		class="button ml-2 is-success is-medium"
+	>Add</button>
+	<p id="errors" class="has-text-danger is-small">{ msg }</p>
 }
 
 css doneTodo() {

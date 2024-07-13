@@ -22,5 +22,7 @@ func main() {
 	http.Handle("PUT /todos/{id}", handlers.HTTPHandler(todoHandler.ToggleTodo))
 	http.Handle("DELETE /todos/{id}", handlers.HTTPHandler(todoHandler.DeleteTodo))
 
+	http.Handle("POST /todos/validate", handlers.HTTPHandler(todoHandler.ValidateTodoDescription))
+
 	http.ListenAndServe(":3000", nil)
 }

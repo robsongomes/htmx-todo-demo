@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/robsongomes/htmx-starter/types"
@@ -17,11 +16,8 @@ func NewInMemoryStore() *InMemoryStore {
 		{Id: 1, Description: "Dar banho no cachorro", Done: false},
 		{Id: 2, Description: "Comprar ração", Done: true},
 	}
-	for i := range 50 {
-		todos = append(todos, types.Todo{Description: fmt.Sprintf("Todo #%d", i)})
-	}
 	return &InMemoryStore{
-		lastId: 52,
+		lastId: 2,
 		todos:  todos,
 	}
 }
